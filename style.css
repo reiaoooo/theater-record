@@ -1,13 +1,26 @@
+/* =========================
+   基本設定
+========================= */
+
 * {
   box-sizing: border-box;
+}
+
+html {
+  background: #faf7f8;
 }
 
 body {
   margin: 0;
   background: #faf7f8;
   color: #333;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
-    "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "Yu Gothic",
+    "Hiragino Kaku Gothic ProN",
+    sans-serif;
 }
 
 
@@ -20,9 +33,13 @@ button {
   cursor: pointer;
 }
 
+button:active {
+  transform: scale(0.98);
+}
+
 
 /* =========================
-   トップ画面
+   ホーム
 ========================= */
 
 #homeScreen {
@@ -31,20 +48,24 @@ button {
 
 header {
   background: #f4dfe7;
-  padding: 24px 20px;
+  padding:
+    22px
+    20px
+    20px;
   text-align: center;
 }
 
 h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 500;
 }
 
-main {
+.home-content {
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 24px 20px;
+  padding: 20px 16px 40px;
 }
 
 
@@ -54,28 +75,31 @@ main {
 
 .summary {
   display: flex;
-  gap: 10px;
-  margin-bottom: 32px;
+  gap: 8px;
+  margin-bottom: 30px;
 }
 
 .summary-box {
   flex: 1;
-  background: white;
-  border-radius: 16px;
-  padding: 18px 10px;
+  min-width: 0;
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 16px 5px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 2px 8px
+    rgba(0, 0, 0, 0.04);
 }
 
 .summary-box span {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   color: #888;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 }
 
 .summary-box strong {
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 500;
 }
 
@@ -85,14 +109,41 @@ main {
 ========================= */
 
 h2 {
+  margin: 0 0 13px;
   font-size: 18px;
-  margin: 0 0 14px;
+  font-weight: 500;
 }
 
 h3 {
-  font-size: 16px;
+  margin:
+    25px
+    0
+    12px;
+  font-size: 15px;
   font-weight: 500;
-  margin: 30px 0 12px;
+}
+
+
+/* =========================
+   セクション
+========================= */
+
+.list-section {
+  margin-top: 30px;
+}
+
+
+/* =========================
+   空の状態
+========================= */
+
+.empty {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 25px 15px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
 }
 
 
@@ -100,36 +151,21 @@ h3 {
    最近の観劇
 ========================= */
 
-.empty {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  text-align: center;
-  color: #999;
-}
-
-
-/* =========================
-   観劇記録
-========================= */
-
 .record-item {
   background: #ffffff;
   border-radius: 14px;
-  padding: 18px;
-  margin-bottom: 10px;
-  text-align: left;
+  padding: 17px;
+  margin-bottom: 9px;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.record-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+.record-item:active {
+  transform: scale(0.99);
 }
 
 .record-title {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
   margin-bottom: 4px;
 }
@@ -137,18 +173,18 @@ h3 {
 .record-performance {
   font-size: 14px;
   color: #666;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 }
 
 .record-info {
-  font-size: 13px;
+  font-size: 12px;
   color: #888;
-  margin-bottom: 5px;
+  margin-top: 4px;
 }
 
 .record-price {
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: 9px;
+  font-size: 13px;
   color: #555;
 }
 
@@ -157,35 +193,51 @@ h3 {
    作品一覧
 ========================= */
 
-.work-section {
-  margin-top: 35px;
-}
-
 .work-item {
   background: #ffffff;
   border-radius: 14px;
-  padding: 18px;
-  margin-bottom: 10px;
+  padding: 17px;
+  margin-bottom: 9px;
   cursor: pointer;
-  transition: 0.2s;
-}
-
-.work-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .work-title {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
 }
 
 .work-data {
   display: flex;
-  gap: 18px;
-  font-size: 13px;
+  gap: 15px;
   color: #888;
+  font-size: 12px;
+}
+
+
+/* =========================
+   劇場一覧
+========================= */
+
+.theater-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 17px;
+  margin-bottom: 9px;
+  cursor: pointer;
+}
+
+.theater-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.theater-data {
+  color: #999;
+  font-size: 12px;
 }
 
 
@@ -195,17 +247,17 @@ h3 {
 
 .add-button {
   width: 100%;
-  margin-top: 24px;
+  margin-top: 25px;
   padding: 16px;
   border: none;
-  border-radius: 14px;
+  border-radius: 13px;
   background: #e7a9bd;
-  color: white;
+  color: #ffffff;
   font-size: 16px;
 }
 
-.add-button:hover {
-  opacity: 0.85;
+.add-button:active {
+  opacity: 0.8;
 }
 
 
@@ -213,28 +265,34 @@ h3 {
    追加・編集画面
 ========================= */
 
-.add-screen {
+.add-screen,
+.detail-screen,
+.work-detail-screen,
+.theater-detail-screen {
   display: none;
   min-height: 100vh;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 30px 25px;
   background: #faf7f8;
 }
+
+.screen-content {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 25px 20px 40px;
+}
+
+
+/* =========================
+   戻るボタン
+========================= */
 
 .back-button {
   border: none;
   background: none;
-  font-size: 16px;
   color: #777;
+  font-size: 16px;
   padding: 0;
   margin-bottom: 25px;
-}
-
-.add-screen h2 {
-  font-size: 25px;
-  font-weight: 500;
-  margin-bottom: 30px;
 }
 
 
@@ -242,40 +300,51 @@ h3 {
    フォーム
 ========================= */
 
+.add-screen h2 {
+  font-size: 25px;
+  margin-bottom: 28px;
+}
+
 #recordForm {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 19px;
 }
 
 #recordForm label {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 #recordForm input,
+#recordForm select,
 #recordForm textarea {
   width: 100%;
-  padding: 14px;
-  border: 1px solid #dfd2d8;
+  border:
+    1px solid
+    #dfd2d8;
   border-radius: 10px;
-  background: white;
+  background: #ffffff;
+  padding: 14px;
   font-size: 16px;
   font-family: inherit;
   outline: none;
 }
 
 #recordForm input:focus,
+#recordForm select:focus,
 #recordForm textarea:focus {
   border-color: #dda0b9;
-  box-shadow: 0 0 0 3px rgba(221, 160, 185, 0.15);
-}
-
-#recordForm textarea {
-  height: 130px;
-  resize: none;
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      221,
+      160,
+      185,
+      0.15
+    );
 }
 
 
@@ -294,16 +363,28 @@ h3 {
 }
 
 .price-input span {
+  font-size: 14px;
   color: #666;
 }
 
 
 /* =========================
-   保存ボタン
+   textarea
+========================= */
+
+#recordForm textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+
+/* =========================
+   保存
 ========================= */
 
 .save-button {
-  margin-top: 10px;
+  margin-top: 5px;
   padding: 15px;
   border: none;
   border-radius: 12px;
@@ -312,8 +393,8 @@ h3 {
   font-size: 16px;
 }
 
-.save-button:hover {
-  opacity: 0.85;
+.save-button:active {
+  opacity: 0.8;
 }
 
 
@@ -321,81 +402,142 @@ h3 {
    作品詳細
 ========================= */
 
-.work-detail-screen {
-  display: none;
-  min-height: 100vh;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 30px 25px;
-}
-
 .work-detail-card {
-  background: white;
-  border-radius: 20px;
-  padding: 25px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 22px;
 }
 
 .work-detail-card h2 {
-  font-size: 25px;
-  font-weight: 500;
-  margin-bottom: 25px;
+  font-size: 24px;
+  margin-bottom: 22px;
 }
 
 
-/* 作品集計 */
+/* =========================
+   作品集計
+========================= */
 
 .work-summary {
   display: flex;
-  gap: 8px;
-  margin-bottom: 30px;
+  gap: 7px;
 }
 
 .work-summary > div {
   flex: 1;
-  text-align: center;
+  min-width: 0;
   background: #faf7f8;
-  border-radius: 12px;
-  padding: 14px 5px;
+  border-radius: 11px;
+  padding: 13px 4px;
+  text-align: center;
 }
 
 .work-summary span {
   display: block;
-  font-size: 11px;
+  font-size: 10px;
   color: #888;
   margin-bottom: 6px;
 }
 
 .work-summary strong {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
 }
 
 
-/* 公演 */
+/* =========================
+   公演
+========================= */
 
 .performance-item {
   background: #faf7f8;
   border-radius: 12px;
   padding: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
   cursor: pointer;
 }
 
-.performance-item:hover {
-  background: #f5ebef;
-}
-
 .performance-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   margin-bottom: 8px;
 }
 
 .performance-data {
   display: flex;
-  gap: 18px;
-  font-size: 13px;
+  gap: 16px;
+  font-size: 12px;
   color: #888;
+}
+
+
+/* =========================
+   劇場詳細
+========================= */
+
+.theater-detail-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 22px;
+}
+
+.theater-detail-card h2 {
+  font-size: 23px;
+  margin-bottom: 5px;
+}
+
+.theater-count {
+  margin: 0;
+  color: #999;
+  font-size: 12px;
+}
+
+
+/* =========================
+   座席記録
+========================= */
+
+.seat-record {
+  background: #faf7f8;
+  border-radius: 13px;
+  padding: 16px;
+  margin-bottom: 9px;
+  cursor: pointer;
+}
+
+.seat-record-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.seat-position {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.rating {
+  color: #d994ae;
+  font-size: 15px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.seat-record-info {
+  margin-top: 7px;
+  color: #888;
+  font-size: 12px;
+}
+
+.seat-record-impression {
+  margin:
+    10px
+    0
+    0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #555;
 }
 
 
@@ -403,30 +545,21 @@ h3 {
    観劇詳細
 ========================= */
 
-.detail-screen {
-  display: none;
-  min-height: 100vh;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 30px 25px;
-}
-
 .detail-card {
   background: #ffffff;
-  border-radius: 20px;
-  padding: 25px;
+  border-radius: 18px;
+  padding: 22px;
 }
 
 .detail-work-name {
-  font-size: 14px;
   color: #999;
-  margin-bottom: 6px;
+  font-size: 13px;
+  margin-bottom: 5px;
 }
 
 .detail-card h2 {
-  font-size: 25px;
-  font-weight: 500;
-  margin-bottom: 30px;
+  font-size: 24px;
+  margin-bottom: 25px;
 }
 
 
@@ -438,40 +571,63 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 0;
-  border-bottom: 1px solid #f0e7ea;
+  gap: 15px;
+  padding: 14px 0;
+  border-bottom:
+    1px solid
+    #f0e7ea;
 }
 
 .detail-row span {
-  font-size: 14px;
   color: #888;
+  font-size: 13px;
 }
 
 .detail-row strong {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
   text-align: right;
 }
 
-.detail-impression {
+
+/* =========================
+   詳細セクション
+========================= */
+
+.detail-section {
   margin-top: 25px;
 }
 
-.detail-impression span {
+.detail-section h3 {
+  margin:
+    0
+    0
+    10px;
   font-size: 14px;
-  color: #888;
+  color: #777;
 }
 
-.detail-impression p {
-  margin: 10px 0 0;
-  line-height: 1.8;
-  font-size: 15px;
+.detail-section .rating {
+  margin-bottom: 10px;
+}
+
+.impression {
+  margin: 0;
   white-space: pre-wrap;
+  line-height: 1.8;
+  font-size: 14px;
+  color: #444;
+}
+
+.no-content {
+  margin: 0;
+  color: #aaa;
+  font-size: 13px;
 }
 
 
 /* =========================
-   編集・削除ボタン
+   編集・削除
 ========================= */
 
 .detail-buttons {
@@ -484,7 +640,7 @@ h3 {
 .delete-button {
   flex: 1;
   width: 0;
-  height: 44px;
+  height: 45px;
   padding: 0;
   border: none;
   border-radius: 10px;
@@ -501,26 +657,27 @@ h3 {
   color: #a66;
 }
 
-.edit-button:hover,
-.delete-button:hover {
-  opacity: 0.85;
-}
-
 
 /* =========================
-   スマホ
+   スマホ調整
 ========================= */
 
-@media (max-width: 600px) {
+@media (max-width: 380px) {
 
-  main {
-    padding: 20px 16px;
+  .summary-box strong {
+    font-size: 17px;
   }
 
-  .add-screen,
-  .detail-screen,
-  .work-detail-screen {
-    padding: 25px 20px;
+  .work-data {
+    gap: 9px;
+  }
+
+  .work-summary strong {
+    font-size: 13px;
+  }
+
+  .rating {
+    font-size: 13px;
   }
 
 }

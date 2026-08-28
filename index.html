@@ -10,7 +10,7 @@
 <body>
 
   <!-- =========================
-       トップ画面
+       ホーム画面
   ========================= -->
 
   <main id="homeScreen">
@@ -19,175 +19,269 @@
       <h1>観劇記録</h1>
     </header>
 
-    <section class="summary">
 
-      <div class="summary-box">
-        <span>作品</span>
-        <strong>0</strong>
-      </div>
+    <div class="home-content">
 
-      <div class="summary-box">
-        <span>公演</span>
-        <strong>0</strong>
-      </div>
+      <!-- 集計 -->
 
-      <div class="summary-box">
-        <span>総額</span>
-        <strong>0円</strong>
-      </div>
+      <section class="summary">
 
-    </section>
+        <div class="summary-box">
+          <span>作品</span>
+          <strong id="workCount">0</strong>
+        </div>
 
+        <div class="summary-box">
+          <span>公演</span>
+          <strong id="performanceCount">0</strong>
+        </div>
 
-    <!-- 最近の観劇 -->
+        <div class="summary-box">
+          <span>総額</span>
+          <strong id="totalPrice">0円</strong>
+        </div>
 
-    <section>
-      <h2>最近の観劇</h2>
-
-      <div class="empty">
-        まだ観劇記録がありません
-      </div>
-
-    </section>
+      </section>
 
 
-    <!-- 作品一覧 -->
+      <!-- 最近の観劇 -->
 
-    <section class="work-section">
+      <section>
 
-      <h2>作品</h2>
+        <h2>最近の観劇</h2>
 
-      <div id="workList"></div>
+        <div id="recentRecords" class="record-list">
 
-    </section>
+          <div class="empty">
+            まだ観劇記録がありません
+          </div>
+
+        </div>
+
+      </section>
 
 
-    <button class="add-button" id="addButton">
-      ＋ 観劇を記録
-    </button>
+      <!-- 作品 -->
+
+      <section class="list-section">
+
+        <div class="section-title">
+          <h2>作品</h2>
+        </div>
+
+        <div id="workList"></div>
+
+      </section>
+
+
+      <!-- 劇場 -->
+
+      <section class="list-section">
+
+        <div class="section-title">
+          <h2>劇場</h2>
+        </div>
+
+        <div id="theaterList"></div>
+
+      </section>
+
+
+      <button
+        class="add-button"
+        id="addButton"
+      >
+        ＋ 観劇を記録
+      </button>
+
+    </div>
 
   </main>
 
 
   <!-- =========================
-       観劇記録 追加・編集画面
+       追加・編集画面
   ========================= -->
 
-  <section class="add-screen" id="addScreen">
+  <section
+    class="add-screen"
+    id="addScreen"
+  >
 
-    <button class="back-button" id="backButton">
-      ‹ 戻る
-    </button>
-
-    <h2 id="formTitle">観劇を記録</h2>
-
-
-    <form id="recordForm">
-
-      <!-- 作品 -->
-
-      <label>
-        作品
-        <input
-          type="text"
-          id="title"
-          placeholder="作品名"
-          required
-        >
-      </label>
-
-
-      <!-- 公演 -->
-
-      <label>
-        公演
-        <input
-          type="text"
-          id="performance"
-          placeholder="公演名"
-          required
-        >
-      </label>
-
-
-      <!-- 観劇日 -->
-
-      <label>
-        観劇日
-        <input
-          type="date"
-          id="date"
-          required
-        >
-      </label>
-
-
-      <!-- 劇場 -->
-
-      <label>
-        劇場
-        <input
-          type="text"
-          id="theater"
-          placeholder="劇場名を入力"
-        >
-      </label>
-
-
-      <!-- 座席 -->
-
-      <label>
-        座席
-        <input
-          type="text"
-          id="seat"
-          placeholder="例：1階 10列 15番"
-        >
-      </label>
-
-
-      <!-- チケット代 -->
-
-      <label>
-        チケット代
-
-        <div class="price-input">
-
-          <input
-            type="number"
-            id="price"
-            placeholder="例：9800"
-            min="0"
-          >
-
-          <span>円</span>
-
-        </div>
-
-      </label>
-
-
-      <!-- 感想 -->
-
-      <label>
-        感想
-
-        <textarea
-          id="impression"
-          placeholder="感想を入力"
-        ></textarea>
-
-      </label>
-
+    <div class="screen-content">
 
       <button
-        type="submit"
-        class="save-button"
+        class="back-button"
+        id="backButton"
       >
-        保存する
+        ‹ 戻る
       </button>
 
-    </form>
+
+      <h2 id="formTitle">
+        観劇を記録
+      </h2>
+
+
+      <form id="recordForm">
+
+        <!-- 作品 -->
+
+        <label>
+          作品
+
+          <input
+            type="text"
+            id="title"
+            placeholder="例：テニスの王子様"
+            required
+          >
+        </label>
+
+
+        <!-- 公演 -->
+
+        <label>
+          公演
+
+          <input
+            type="text"
+            id="performance"
+            placeholder="例：立海公演"
+            required
+          >
+        </label>
+
+
+        <!-- 観劇日 -->
+
+        <label>
+          観劇日
+
+          <input
+            type="date"
+            id="date"
+            required
+          >
+        </label>
+
+
+        <!-- 劇場 -->
+
+        <label>
+          劇場
+
+          <input
+            type="text"
+            id="theater"
+            placeholder="例：日本青年館ホール"
+            required
+          >
+        </label>
+
+
+        <!-- 座席 -->
+
+        <label>
+          座席
+
+          <input
+            type="text"
+            id="seat"
+            placeholder="例：1階 10列 15番"
+          >
+        </label>
+
+
+        <!-- チケット代 -->
+
+        <label>
+          チケット代
+
+          <div class="price-input">
+
+            <input
+              type="number"
+              id="price"
+              placeholder="例：9800"
+              min="0"
+            >
+
+            <span>円</span>
+
+          </div>
+
+        </label>
+
+
+        <!-- 座席の見やすさ -->
+
+        <label>
+          座席の見やすさ
+
+          <select id="seatRating">
+
+            <option value="5">
+              ★★★★★
+            </option>
+
+            <option value="4">
+              ★★★★☆
+            </option>
+
+            <option value="3">
+              ★★★☆☆
+            </option>
+
+            <option value="2">
+              ★★☆☆☆
+            </option>
+
+            <option value="1">
+              ★☆☆☆☆
+            </option>
+
+          </select>
+
+        </label>
+
+
+        <!-- 座席の感想 -->
+
+        <label>
+          座席の感想
+
+          <textarea
+            id="seatImpression"
+            placeholder="この座席からの見え方や、見やすさを記録"
+          ></textarea>
+
+        </label>
+
+
+        <!-- 作品の感想 -->
+
+        <label>
+          作品の感想
+
+          <textarea
+            id="workImpression"
+            placeholder="作品・公演についての感想を記録"
+          ></textarea>
+
+        </label>
+
+
+        <button
+          type="submit"
+          class="save-button"
+        >
+          保存する
+        </button>
+
+      </form>
+
+    </div>
 
   </section>
 
@@ -201,20 +295,51 @@
     id="workDetailScreen"
   >
 
-    <button
-      class="back-button"
-      id="workDetailBackButton"
-    >
-      ‹ 戻る
-    </button>
+    <div class="screen-content">
 
-    <div id="workDetailContent"></div>
+      <button
+        class="back-button"
+        id="workDetailBackButton"
+      >
+        ‹ 戻る
+      </button>
+
+
+      <div id="workDetailContent"></div>
+
+    </div>
 
   </section>
 
 
   <!-- =========================
-       観劇記録 詳細画面
+       劇場詳細画面
+  ========================= -->
+
+  <section
+    class="theater-detail-screen"
+    id="theaterDetailScreen"
+  >
+
+    <div class="screen-content">
+
+      <button
+        class="back-button"
+        id="theaterDetailBackButton"
+      >
+        ‹ 戻る
+      </button>
+
+
+      <div id="theaterDetailContent"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       観劇詳細画面
   ========================= -->
 
   <section
@@ -222,14 +347,19 @@
     id="detailScreen"
   >
 
-    <button
-      class="back-button"
-      id="detailBackButton"
-    >
-      ‹ 戻る
-    </button>
+    <div class="screen-content">
 
-    <div id="detailContent"></div>
+      <button
+        class="back-button"
+        id="detailBackButton"
+      >
+        ‹ 戻る
+      </button>
+
+
+      <div id="detailContent"></div>
+
+    </div>
 
   </section>
 
