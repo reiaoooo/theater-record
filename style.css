@@ -1,0 +1,526 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #faf7f8;
+  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+}
+
+
+/* =========================
+   共通
+========================= */
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+
+/* =========================
+   トップ画面
+========================= */
+
+#homeScreen {
+  min-height: 100vh;
+}
+
+header {
+  background: #f4dfe7;
+  padding: 24px 20px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+
+/* =========================
+   集計
+========================= */
+
+.summary {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.summary-box {
+  flex: 1;
+  background: white;
+  border-radius: 16px;
+  padding: 18px 10px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.summary-box span {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.summary-box strong {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+
+/* =========================
+   見出し
+========================= */
+
+h2 {
+  font-size: 18px;
+  margin: 0 0 14px;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 30px 0 12px;
+}
+
+
+/* =========================
+   最近の観劇
+========================= */
+
+.empty {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  color: #999;
+}
+
+
+/* =========================
+   観劇記録
+========================= */
+
+.record-item {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.record-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.record-title {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.record-performance {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.record-info {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.record-price {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+
+/* =========================
+   作品一覧
+========================= */
+
+.work-section {
+  margin-top: 35px;
+}
+
+.work-item {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.work-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.work-title {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.work-data {
+  display: flex;
+  gap: 18px;
+  font-size: 13px;
+  color: #888;
+}
+
+
+/* =========================
+   追加ボタン
+========================= */
+
+.add-button {
+  width: 100%;
+  margin-top: 24px;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: #e7a9bd;
+  color: white;
+  font-size: 16px;
+}
+
+.add-button:hover {
+  opacity: 0.85;
+}
+
+
+/* =========================
+   追加・編集画面
+========================= */
+
+.add-screen {
+  display: none;
+  min-height: 100vh;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 25px;
+  background: #faf7f8;
+}
+
+.back-button {
+  border: none;
+  background: none;
+  font-size: 16px;
+  color: #777;
+  padding: 0;
+  margin-bottom: 25px;
+}
+
+.add-screen h2 {
+  font-size: 25px;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+
+
+/* =========================
+   フォーム
+========================= */
+
+#recordForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#recordForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+}
+
+#recordForm input,
+#recordForm textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #dfd2d8;
+  border-radius: 10px;
+  background: white;
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+}
+
+#recordForm input:focus,
+#recordForm textarea:focus {
+  border-color: #dda0b9;
+  box-shadow: 0 0 0 3px rgba(221, 160, 185, 0.15);
+}
+
+#recordForm textarea {
+  height: 130px;
+  resize: none;
+}
+
+
+/* =========================
+   チケット代
+========================= */
+
+.price-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-input input {
+  flex: 1;
+}
+
+.price-input span {
+  color: #666;
+}
+
+
+/* =========================
+   保存ボタン
+========================= */
+
+.save-button {
+  margin-top: 10px;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: #e5a2bc;
+  color: white;
+  font-size: 16px;
+}
+
+.save-button:hover {
+  opacity: 0.85;
+}
+
+
+/* =========================
+   作品詳細
+========================= */
+
+.work-detail-screen {
+  display: none;
+  min-height: 100vh;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 25px;
+}
+
+.work-detail-card {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+}
+
+.work-detail-card h2 {
+  font-size: 25px;
+  font-weight: 500;
+  margin-bottom: 25px;
+}
+
+
+/* 作品集計 */
+
+.work-summary {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.work-summary > div {
+  flex: 1;
+  text-align: center;
+  background: #faf7f8;
+  border-radius: 12px;
+  padding: 14px 5px;
+}
+
+.work-summary span {
+  display: block;
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.work-summary strong {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+
+/* 公演 */
+
+.performance-item {
+  background: #faf7f8;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.performance-item:hover {
+  background: #f5ebef;
+}
+
+.performance-name {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.performance-data {
+  display: flex;
+  gap: 18px;
+  font-size: 13px;
+  color: #888;
+}
+
+
+/* =========================
+   観劇詳細
+========================= */
+
+.detail-screen {
+  display: none;
+  min-height: 100vh;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 25px;
+}
+
+.detail-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 25px;
+}
+
+.detail-work-name {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 6px;
+}
+
+.detail-card h2 {
+  font-size: 25px;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+
+
+/* =========================
+   詳細情報
+========================= */
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0e7ea;
+}
+
+.detail-row span {
+  font-size: 14px;
+  color: #888;
+}
+
+.detail-row strong {
+  font-size: 15px;
+  font-weight: 400;
+  text-align: right;
+}
+
+.detail-impression {
+  margin-top: 25px;
+}
+
+.detail-impression span {
+  font-size: 14px;
+  color: #888;
+}
+
+.detail-impression p {
+  margin: 10px 0 0;
+  line-height: 1.8;
+  font-size: 15px;
+  white-space: pre-wrap;
+}
+
+
+/* =========================
+   編集・削除ボタン
+========================= */
+
+.detail-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.edit-button,
+.delete-button {
+  flex: 1;
+  width: 0;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.edit-button {
+  background: #e7a9bd;
+  color: white;
+}
+
+.delete-button {
+  background: #f1e8ec;
+  color: #a66;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+  opacity: 0.85;
+}
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 600px) {
+
+  main {
+    padding: 20px 16px;
+  }
+
+  .add-screen,
+  .detail-screen,
+  .work-detail-screen {
+    padding: 25px 20px;
+  }
+
+}
