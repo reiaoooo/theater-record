@@ -882,17 +882,28 @@ function openWorkDetail(workId) {
     const performancePrice =
       performanceRecords.reduce((sum, r) => sum + Number(r.price || 0), 0);
 
-    html += `
-      <div class="performance-block">
+html += `
+  <div class="performance-block">
 
-        <div class="performance-title">
-          ${escapeHTML(performance.name)}
-        </div>
+    <div class="performance-title" style="display:flex; align-items:center; gap:10px;">
 
-        <div class="performance-summary">
-          ${performanceRecords.length}回 ／ ¥${performancePrice.toLocaleString()}
-        </div>
-    `;
+      ${
+        performance.image
+          ? `<img src="${escapeHTML(performance.image)}" 
+                 alt="" 
+                 style="width:80px; height:80px; border-radius:12px; object-fit:cover;">`
+          : ""
+      }
+
+      ${escapeHTML(performance.name)}
+
+    </div>
+
+    <div class="performance-summary">
+      ${performanceRecords.length}回 ／ ¥${performancePrice.toLocaleString()}
+    </div>
+`;
+
 
     if (performanceRecords.length === 0) {
       html += `
