@@ -131,7 +131,7 @@ h2 {
 
 
 /* =====================================================
-   小さい登録ボタン
+   小さいボタン
 ===================================================== */
 
 .small-button {
@@ -181,11 +181,14 @@ h2 {
 
   box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.04);
+
+  transition:
+    transform 0.1s;
 }
 
 
 .work-card:active {
-  transform: scale(0.99);
+  transform: scale(0.98);
 }
 
 
@@ -228,6 +231,77 @@ h2 {
 
 
 .work-arrow {
+  color: #bbb;
+
+  font-size: 22px;
+}
+
+
+/* =====================================================
+   劇場一覧
+===================================================== */
+
+.theater-section {
+  margin-top: 32px;
+}
+
+
+.theater-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+.theater-card {
+  background: white;
+
+  border-radius: 15px;
+
+  padding: 15px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+
+.theater-card:active {
+  transform: scale(0.98);
+}
+
+
+.theater-info {
+  min-width: 0;
+}
+
+
+.theater-name {
+  font-size: 15px;
+
+  word-break: break-word;
+
+  margin-bottom: 4px;
+}
+
+
+.theater-meta {
+  color: #999;
+
+  font-size: 12px;
+}
+
+
+.theater-arrow {
   color: #bbb;
 
   font-size: 22px;
@@ -279,6 +353,19 @@ h2 {
   border-radius: 15px;
 
   padding: 15px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04);
+
+  transition:
+    transform 0.1s;
+}
+
+
+.recent-card:active {
+  transform: scale(0.98);
 }
 
 
@@ -543,7 +630,7 @@ textarea {
   z-index: 20;
 
   background:
-    rgba(250, 247, 248, 0.96);
+    rgba(250, 247, 248, 0.97);
 
   overflow-y: auto;
 
@@ -593,7 +680,7 @@ textarea {
 
 
 /* =====================================================
-   作品詳細
+   詳細画面
 ===================================================== */
 
 .detail-screen {
@@ -688,6 +775,16 @@ textarea {
   padding: 17px;
 
   margin-bottom: 10px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+
+.record-card:active {
+  transform: scale(0.99);
 }
 
 
@@ -758,15 +855,6 @@ textarea {
 }
 
 
-/*
-  感想の表示。
-
-  white-space: pre-wrap によって
-  入力した改行を維持する。
-
-  HTML側のインデントは本文の中に入れない。
-*/
-
 .impression-text {
   font-size: 14px;
 
@@ -829,6 +917,51 @@ textarea {
   background: #fff8fa;
 
   color: #bd718d;
+}
+
+
+/* =====================================================
+   記録詳細
+===================================================== */
+
+.record-detail-card {
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 20px;
+}
+
+
+.record-detail-title {
+  font-size: 22px;
+
+  margin-bottom: 18px;
+}
+
+
+.record-detail-row {
+  padding: 12px 0;
+
+  border-bottom: 1px solid #f0e7eb;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+.record-detail-row:last-child {
+  border-bottom: none;
+}
+
+
+.record-detail-label {
+  color: #999;
+
+  font-size: 12px;
+
+  margin-bottom: 4px;
 }
 
 
