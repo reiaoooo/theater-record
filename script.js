@@ -1,804 +1,326 @@
-// =========================
-// 要素を取得
-// =========================
-
-const homeScreen =
-  document.getElementById("homeScreen");
-
-const addScreen =
-  document.getElementById("addScreen");
-
-const detailScreen =
-  document.getElementById("detailScreen");
-
-const workDetailScreen =
-  document.getElementById("workDetailScreen");
-
-const theaterDetailScreen =
-  document.getElementById("theaterDetailScreen");
+/* =====================================================
+   観劇記録アプリ
+===================================================== */
 
 
-const addButton =
-  document.getElementById("addButton");
+/* =====================================================
+   データ
+===================================================== */
 
-const backButton =
-  document.getElementById("backButton");
-
-const detailBackButton =
-  document.getElementById("detailBackButton");
-
-const workDetailBackButton =
-  document.getElementById("workDetailBackButton");
-
-const theaterDetailBackButton =
-  document.getElementById(
-    "theaterDetailBackButton"
+let works =
+  JSON.parse(
+    localStorage.getItem("theaterWorks") || "[]"
   );
 
 
-const recordForm =
-  document.getElementById("recordForm");
+let performances =
+  JSON.parse(
+    localStorage.getItem("theaterPerformances") || "[]"
+  );
 
 
-const formTitle =
-  document.getElementById("formTitle");
+let theaters =
+  JSON.parse(
+    localStorage.getItem("theaterTheaters") || "[]"
+  );
 
-
-// =========================
-// データ
-// =========================
 
 let records =
   JSON.parse(
-    localStorage.getItem("theaterRecords")
-  ) || [];
+    localStorage.getItem("theaterRecords") || "[]"
+  );
 
 
-// 編集中の記録
+/* =====================================================
+   保存
+===================================================== */
 
-let editingId = null;
+function saveData() {
 
-
-// =========================
-// 画面切り替え
-// =========================
-
-function hideAllScreens() {
-
-  homeScreen.style.display = "none";
-
-  addScreen.style.display = "none";
-
-  detailScreen.style.display = "none";
-
-  workDetailScreen.style.display = "none";
-
-  theaterDetailScreen.style.display = "none";
-
-}
+  localStorage.setItem(
+    "theaterWorks",
+    JSON.stringify(works)
+  );
 
 
-// =========================
-// ホーム画面
-// =========================
+  localStorage.setItem(
+    "theaterPerformances",
+    JSON.stringify(performances)
+  );
 
-function showHomeScreen() {
 
-  hideAllScreens();
+  localStorage.setItem(
+    "theaterTheaters",
+    JSON.stringify(theaters)
+  );
 
-  homeScreen.style.display = "block";
 
-  displayRecords();
-
-  displayWorks();
-
-  displayTheaters();
-
-  updateSummary();
+  localStorage.setItem(
+    "theaterRecords",
+    JSON.stringify(records)
+  );
 
 }
 
 
-// =========================
-// 新規登録画面
-// =========================
+/* =====================================================
+   ID
+===================================================== */
 
-function showNewRecordScreen() {
+function createId() {
 
-  editingId = null;
-
-  formTitle.textContent =
-    "観劇を記録";
-
-  recordForm.reset();
-
-  hideAllScreens();
-
-  addScreen.style.display = "block";
+  return (
+    Date.now().toString() +
+    Math.random()
+      .toString(16)
+      .slice(2)
+  );
 
 }
 
 
-// =========================
-// 編集画面
-// =========================
+/* =====================================================
+   画面取得
+===================================================== */
 
-function showEditScreen(record) {
+const homeScreen =
+  document.getElementById(
+    "homeScreen"
+  );
 
-  editingId = record.id;
 
-  formTitle.textContent =
-    "記録を編集";
+const addScreen =
+  document.getElementById(
+    "addScreen"
+  );
 
 
-  document.getElementById("title").value =
-    record.title;
+const workScreen =
+  document.getElementById(
+    "workScreen"
+  );
 
-  document.getElementById("performance").value =
-    record.performance;
 
-  document.getElementById("date").value =
-    record.date;
+const performanceScreen =
+  document.getElementById(
+    "performanceScreen"
+  );
 
-  document.getElementById("theater").value =
-    record.theater;
 
-  document.getElementById("seat").value =
-    record.seat || "";
+const theaterScreen =
+  document.getElementById(
+    "theaterScreen"
+  );
 
-  document.getElementById("price").value =
-    record.price || "";
 
-  document.getElementById("seatRating").value =
-    record.seatRating || 5;
+const detailScreen =
+  document.getElementById(
+    "detailScreen"
+  );
 
-  document.getElementById("seatImpression").value =
-    record.seatImpression || "";
 
-  document.getElementById("workImpression").value =
-    record.workImpression || "";
+/* =====================================================
+   初期表示
+===================================================== */
 
+renderHome();
 
-  hideAllScreens();
 
-  addScreen.style.display = "block";
+/* =====================================================
+   ホーム表示
+===================================================== */
 
-}
+function renderHome() {
 
+  /*
+   * 作品数
+   */
 
-// =========================
-// 詳細画面
-// =========================
+  document.getElementById(
+    "workCount"
+  ).textContent =
+    works.length;
 
-function showDetailScreen(record) {
 
-  hideAllScreens();
+  /*
+   * 観劇回数
+   */
 
-  detailScreen.style.display = "block";
+  document.getElementById(
+    "recordCount"
+  ).textContent =
+    records.length;
 
 
-  detailContent.innerHTML = `
-
-    <div class="detail-card">
-
-      <div class="detail-work-name">
-        ${escapeHTML(record.title)}
-      </div>
-
-      <h2>
-        ${escapeHTML(record.performance)}
-      </h2>
-
-
-      <div class="detail-row">
-        <span>観劇日</span>
-
-        <strong>
-          ${formatDate(record.date)}
-        </strong>
-      </div>
-
-
-      <div class="detail-row">
-        <span>劇場</span>
-
-        <strong>
-          ${escapeHTML(record.theater)}
-        </strong>
-      </div>
-
-
-      ${
-        record.seat
-        ? `
-          <div class="detail-row">
-            <span>座席</span>
-
-            <strong>
-              ${escapeHTML(record.seat)}
-            </strong>
-          </div>
-        `
-        : ""
-      }
-
-
-      <div class="detail-row">
-        <span>チケット代</span>
-
-        <strong>
-          ${formatPrice(record.price)}
-        </strong>
-      </div>
-
-
-      <!-- 座席について -->
-
-      <div class="detail-section">
-
-        <h3>
-          座席
-        </h3>
-
-
-        <div class="rating">
-          ${getStars(record.seatRating)}
-        </div>
-
-
-        ${
-          record.seatImpression
-          ? `
-            <p class="impression">
-              ${escapeHTML(
-                record.seatImpression
-              )}
-            </p>
-          `
-          : `
-            <p class="no-content">
-              座席の感想はありません
-            </p>
-          `
-        }
-
-      </div>
-
-
-      <!-- 作品について -->
-
-      <div class="detail-section">
-
-        <h3>
-          作品の感想
-        </h3>
-
-
-        ${
-          record.workImpression
-          ? `
-            <p class="impression">
-              ${escapeHTML(
-                record.workImpression
-              )}
-            </p>
-          `
-          : `
-            <p class="no-content">
-              作品の感想はありません
-            </p>
-          `
-        }
-
-      </div>
-
-
-      <!-- ボタン -->
-
-      <div class="detail-buttons">
-
-        <button
-          class="edit-button"
-          id="editButton"
-        >
-          編集
-        </button>
-
-
-        <button
-          class="delete-button"
-          id="deleteButton"
-        >
-          削除
-        </button>
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  document
-    .getElementById("editButton")
-    .addEventListener(
-      "click",
-      () => {
-
-        showEditScreen(record);
-
-      }
-    );
-
-
-  document
-    .getElementById("deleteButton")
-    .addEventListener(
-      "click",
-      () => {
-
-        deleteRecord(record.id);
-
-      }
-    );
-
-}
-
-
-// =========================
-// 作品詳細
-// =========================
-
-function showWorkDetailScreen(title) {
-
-  hideAllScreens();
-
-  workDetailScreen.style.display = "block";
-
-
-  const workRecords =
-    records.filter(
-      record =>
-        record.title === title
-    );
-
-
-  const performances = {};
-
-
-  workRecords.forEach(record => {
-
-    if (!performances[record.performance]) {
-
-      performances[record.performance] = [];
-
-    }
-
-    performances[record.performance]
-      .push(record);
-
-  });
-
+  /*
+   * 合計金額
+   */
 
   const totalPrice =
-    workRecords.reduce(
-      (sum, record) =>
-        sum + (Number(record.price) || 0),
+    records.reduce(
+      (sum, record) => {
+
+        return (
+          sum +
+          Number(record.price || 0)
+        );
+
+      },
       0
     );
 
 
-  let performanceHTML = "";
+  document.getElementById(
+    "totalPrice"
+  ).textContent =
+    "¥" +
+    totalPrice.toLocaleString();
 
 
-  Object.keys(performances)
-    .forEach(performance => {
+  renderWorkList();
 
-      const performanceRecords =
-        performances[performance];
-
-
-      const price =
-        performanceRecords.reduce(
-          (sum, record) =>
-            sum +
-            (Number(record.price) || 0),
-          0
-        );
-
-
-      performanceHTML += `
-
-        <div
-          class="performance-item"
-          data-performance="${escapeHTML(
-            performance
-          )}"
-        >
-
-          <div class="performance-name">
-            ${escapeHTML(performance)}
-          </div>
-
-
-          <div class="performance-data">
-
-            <span>
-              ${performanceRecords.length}回
-            </span>
-
-            <span>
-              ${price.toLocaleString()}円
-            </span>
-
-          </div>
-
-        </div>
-
-      `;
-
-    });
-
-
-  workDetailContent.innerHTML = `
-
-    <div class="work-detail-card">
-
-      <h2>
-        ${escapeHTML(title)}
-      </h2>
-
-
-      <div class="work-summary">
-
-        <div>
-
-          <span>公演数</span>
-
-          <strong>
-            ${Object.keys(performances).length}
-          </strong>
-
-        </div>
-
-
-        <div>
-
-          <span>観劇回数</span>
-
-          <strong>
-            ${workRecords.length}
-          </strong>
-
-        </div>
-
-
-        <div>
-
-          <span>累計</span>
-
-          <strong>
-            ${totalPrice.toLocaleString()}円
-          </strong>
-
-        </div>
-
-      </div>
-
-
-      <h3>
-        公演
-      </h3>
-
-
-      <div class="performance-list">
-
-        ${performanceHTML}
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  document
-    .querySelectorAll(
-      ".performance-item"
-    )
-    .forEach(item => {
-
-      item.addEventListener(
-        "click",
-        () => {
-
-          const performance =
-            item.dataset.performance;
-
-
-          const record =
-            workRecords.find(
-              record =>
-                record.performance ===
-                performance
-            );
-
-
-          if (record) {
-
-            showDetailScreen(record);
-
-          }
-
-        }
-      );
-
-    });
+  renderRecentRecords();
 
 }
 
 
-// =========================
-// 劇場一覧
-// =========================
+/* =====================================================
+   作品一覧
+===================================================== */
 
-function displayTheaters() {
+function renderWorkList() {
 
-  const theaterList =
+  const container =
     document.getElementById(
-      "theaterList"
+      "workList"
     );
 
 
-  theaterList.innerHTML = "";
+  container.innerHTML = "";
 
 
-  const theaters = {};
+  if (works.length === 0) {
+
+    container.innerHTML = `
+      <div class="empty">まだ作品が登録されていません</div>
+    `;
+
+    return;
+
+  }
 
 
-  records.forEach(record => {
+  works.forEach(
+    work => {
 
-    if (!record.theater) {
-
-      return;
-
-    }
-
-
-    if (!theaters[record.theater]) {
-
-      theaters[record.theater] = [];
-
-    }
+      const workRecords =
+        records.filter(
+          record =>
+            record.workId ===
+            work.id
+        );
 
 
-    theaters[record.theater]
-      .push(record);
+      const totalPrice =
+        workRecords.reduce(
+          (sum, record) => {
 
-  });
+            return (
+              sum +
+              Number(record.price || 0)
+            );
 
-
-  Object.keys(theaters)
-    .forEach(theater => {
-
-      const theaterItem =
-        document.createElement("div");
-
-
-      theaterItem.className =
-        "theater-item";
+          },
+          0
+        );
 
 
-      theaterItem.innerHTML = `
+      const card =
+        document.createElement(
+          "div"
+        );
 
-        <div class="theater-name">
-          ${escapeHTML(theater)}
+
+      card.className =
+        "work-card";
+
+
+      const imageHTML =
+        work.image
+          ? `
+            <img
+              class="work-image"
+              src="${work.image}"
+              alt=""
+            >
+          `
+          : `
+            <div class="work-image"></div>
+          `;
+
+
+      card.innerHTML = `
+        ${imageHTML}
+
+        <div class="work-info">
+
+          <div class="work-name">${escapeHTML(work.name)}</div>
+
+          <div class="work-meta">
+            ${workRecords.length}回
+            ／
+            ¥${totalPrice.toLocaleString()}
+          </div>
+
         </div>
 
-
-        <div class="theater-data">
-
-          <span>
-            ${theaters[theater].length}件
-          </span>
-
+        <div class="work-arrow">
+          ›
         </div>
-
       `;
 
 
-      theaterItem.addEventListener(
+      card.addEventListener(
         "click",
         () => {
 
-          showTheaterDetailScreen(
-            theater
+          openWorkDetail(
+            work.id
           );
 
         }
       );
 
 
-      theaterList.appendChild(
-        theaterItem
+      container.appendChild(
+        card
       );
 
-    });
-
-}
-
-
-// =========================
-// 劇場詳細
-// =========================
-
-function showTheaterDetailScreen(
-  theater
-) {
-
-  hideAllScreens();
-
-  theaterDetailScreen.style.display =
-    "block";
-
-
-  const theaterRecords =
-    records.filter(
-      record =>
-        record.theater === theater
-    );
-
-
-  theaterRecords.sort(
-    (a, b) =>
-      new Date(b.date) -
-      new Date(a.date)
+    }
   );
 
-
-  let seatHTML = "";
-
-
-  theaterRecords.forEach(record => {
-
-    seatHTML += `
-
-      <div
-        class="seat-record"
-        data-id="${record.id}"
-      >
-
-        <div class="seat-record-top">
-
-          <div class="seat-position">
-
-            ${
-              record.seat
-              ? escapeHTML(record.seat)
-              : "座席未登録"
-            }
-
-          </div>
-
-
-          <div class="rating">
-            ${getStars(record.seatRating)}
-          </div>
-
-        </div>
-
-
-        <div class="seat-record-info">
-
-          ${formatDate(record.date)}
-          ｜
-          ${escapeHTML(record.title)}
-
-        </div>
-
-
-        ${
-          record.seatImpression
-          ? `
-            <p class="seat-record-impression">
-              ${escapeHTML(
-                record.seatImpression
-              )}
-            </p>
-          `
-          : ""
-        }
-
-      </div>
-
-    `;
-
-  });
-
-
-  theaterDetailContent.innerHTML = `
-
-    <div class="theater-detail-card">
-
-      <h2>
-        ${escapeHTML(theater)}
-      </h2>
-
-
-      <p class="theater-count">
-        ${theaterRecords.length}件の座席記録
-      </p>
-
-
-      <h3>
-        座席記録
-      </h3>
-
-
-      <div class="seat-record-list">
-
-        ${seatHTML}
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  document
-    .querySelectorAll(".seat-record")
-    .forEach(item => {
-
-      item.addEventListener(
-        "click",
-        () => {
-
-          const id =
-            Number(item.dataset.id);
-
-
-          const record =
-            records.find(
-              record =>
-                record.id === id
-            );
-
-
-          if (record) {
-
-            showDetailScreen(record);
-
-          }
-
-        }
-      );
-
-    });
-
 }
 
 
-// =========================
-// 最近の観劇
-// =========================
+/* =====================================================
+   最近の観劇
+===================================================== */
 
-function displayRecords() {
+function renderRecentRecords() {
 
-  const recentRecords =
+  const container =
     document.getElementById(
-      "recentRecords"
+      "recentList"
     );
+
+
+  container.innerHTML = "";
 
 
   if (records.length === 0) {
 
-    recentRecords.innerHTML = `
-
-      <div class="empty">
-        まだ観劇記録がありません
-      </div>
-
+    container.innerHTML = `
+      <div class="empty">まだ観劇記録がありません</div>
     `;
 
     return;
@@ -807,525 +329,1741 @@ function displayRecords() {
 
 
   const sortedRecords =
-    [...records].sort(
-      (a, b) =>
-        new Date(b.date) -
-        new Date(a.date)
-    );
+    [...records]
+      .sort(
+        (a, b) =>
+          new Date(b.date) -
+          new Date(a.date)
+      )
+      .slice(0, 5);
 
 
-  recentRecords.innerHTML = "";
+  sortedRecords.forEach(
+    record => {
+
+      const work =
+        works.find(
+          work =>
+            work.id ===
+            record.workId
+        );
 
 
-  sortedRecords
-    .slice(0, 5)
-    .forEach(record => {
-
-      const item =
-        document.createElement("div");
-
-
-      item.className =
-        "record-item";
+      const performance =
+        performances.find(
+          performance =>
+            performance.id ===
+            record.performanceId
+        );
 
 
-      item.innerHTML = `
+      const theater =
+        theaters.find(
+          theater =>
+            theater.id ===
+            record.theaterId
+        );
 
-        <div class="record-title">
-          ${escapeHTML(record.title)}
-        </div>
+
+      const card =
+        document.createElement(
+          "div"
+        );
 
 
-        <div class="record-performance">
+      card.className =
+        "recent-card";
+
+
+      card.innerHTML = `
+        <div class="recent-title">
           ${escapeHTML(
-            record.performance
+            work?.name ||
+            "作品不明"
           )}
         </div>
 
-
-        <div class="record-info">
-          ${formatDate(record.date)}
-          ｜
-          ${escapeHTML(record.theater)}
+        <div class="recent-info">
+          ${escapeHTML(
+            performance?.name ||
+            "公演不明"
+          )}
+          ／
+          ${escapeHTML(
+            record.date || ""
+          )}
+          ${
+            theater
+              ? "／ " +
+                escapeHTML(
+                  theater.name
+                )
+              : ""
+          }
         </div>
-
-
-        ${
-          record.seat
-          ? `
-            <div class="record-info">
-              座席：
-              ${escapeHTML(record.seat)}
-            </div>
-          `
-          : ""
-        }
-
-
-        <div class="record-price">
-          ${formatPrice(record.price)}
-        </div>
-
       `;
 
 
-      item.addEventListener(
-        "click",
-        () => {
-
-          showDetailScreen(record);
-
-        }
+      container.appendChild(
+        card
       );
 
-
-      recentRecords.appendChild(item);
-
-    });
+    }
+  );
 
 }
 
 
-// =========================
-// 作品一覧
-// =========================
+/* =====================================================
+   観劇記録画面を開く
+===================================================== */
 
-function displayWorks() {
+document
+  .getElementById("addButton")
+  .addEventListener(
+    "click",
+    () => {
 
-  const workList =
+      openRecordScreen();
+
+    }
+  );
+
+
+function openRecordScreen(
+  record = null
+) {
+
+  homeScreen.style.display =
+    "none";
+
+
+  detailScreen.style.display =
+    "none";
+
+
+  addScreen.style.display =
+    "block";
+
+
+  document
+    .getElementById("recordForm")
+    .reset();
+
+
+  document.getElementById(
+    "editingRecordId"
+  ).value = "";
+
+
+  populateWorkSelect();
+
+  populateTheaterSelect();
+
+
+  /*
+   * 新規
+   */
+
+  if (!record) {
+
     document.getElementById(
-      "workList"
-    );
-
-
-  workList.innerHTML = "";
-
-
-  const works = {};
-
-
-  records.forEach(record => {
-
-    if (!works[record.title]) {
-
-      works[record.title] = [];
-
-    }
-
-
-    works[record.title]
-      .push(record);
-
-  });
-
-
-  Object.keys(works)
-    .forEach(title => {
-
-      const workRecords =
-        works[title];
-
-
-      const performances =
-        new Set(
-          workRecords.map(
-            record =>
-              record.performance
-          )
-        );
-
-
-      const totalPrice =
-        workRecords.reduce(
-          (sum, record) =>
-            sum +
-            (Number(record.price) || 0),
-          0
-        );
-
-
-      const item =
-        document.createElement("div");
-
-
-      item.className =
-        "work-item";
-
-
-      item.innerHTML = `
-
-        <div class="work-title">
-          ${escapeHTML(title)}
-        </div>
-
-
-        <div class="work-data">
-
-          <span>
-            ${performances.size}公演
-          </span>
-
-          <span>
-            ${workRecords.length}回
-          </span>
-
-          <span>
-            ${totalPrice.toLocaleString()}円
-          </span>
-
-        </div>
-
-      `;
-
-
-      item.addEventListener(
-        "click",
-        () => {
-
-          showWorkDetailScreen(title);
-
-        }
-      );
-
-
-      workList.appendChild(item);
-
-    });
-
-}
-
-
-// =========================
-// 保存
-// =========================
-
-recordForm.addEventListener(
-  "submit",
-  event => {
-
-    event.preventDefault();
-
-
-    const title =
-      document
-        .getElementById("title")
-        .value
-        .trim();
-
-
-    const performance =
-      document
-        .getElementById("performance")
-        .value
-        .trim();
-
-
-    const date =
-      document.getElementById("date").value;
-
-
-    const theater =
-      document
-        .getElementById("theater")
-        .value
-        .trim();
-
-
-    const seat =
-      document
-        .getElementById("seat")
-        .value
-        .trim();
-
-
-    const price =
-      Number(
-        document
-          .getElementById("price")
-          .value
-      ) || 0;
-
-
-    const seatRating =
-      Number(
-        document
-          .getElementById("seatRating")
-          .value
-      );
-
-
-    const seatImpression =
-      document
-        .getElementById(
-          "seatImpression"
-        )
-        .value
-        .trim();
-
-
-    const workImpression =
-      document
-        .getElementById(
-          "workImpression"
-        )
-        .value
-        .trim();
-
-
-    // =========================
-    // 編集
-    // =========================
-
-    if (editingId !== null) {
-
-      const record =
-        records.find(
-          record =>
-            record.id === editingId
-        );
-
-
-      if (record) {
-
-        record.title =
-          title;
-
-        record.performance =
-          performance;
-
-        record.date =
-          date;
-
-        record.theater =
-          theater;
-
-        record.seat =
-          seat;
-
-        record.price =
-          price;
-
-        record.seatRating =
-          seatRating;
-
-        record.seatImpression =
-          seatImpression;
-
-        record.workImpression =
-          workImpression;
-
-      }
-
-    }
-
-
-    // =========================
-    // 新規登録
-    // =========================
-
-    else {
-
-      records.push({
-
-        id: Date.now(),
-
-        title: title,
-
-        performance: performance,
-
-        date: date,
-
-        theater: theater,
-
-        seat: seat,
-
-        price: price,
-
-        seatRating: seatRating,
-
-        seatImpression:
-          seatImpression,
-
-        workImpression:
-          workImpression
-
-      });
-
-    }
-
-
-    // =========================
-    // 保存
-    // =========================
-
-    localStorage.setItem(
-      "theaterRecords",
-      JSON.stringify(records)
-    );
-
-
-    editingId = null;
-
-    recordForm.reset();
-
-
-    showHomeScreen();
-
-  }
-);
-
-
-// =========================
-// 削除
-// =========================
-
-function deleteRecord(id) {
-
-  const confirmed =
-    confirm(
-      "この観劇記録を削除しますか？"
-    );
-
-
-  if (!confirmed) {
+      "recordScreenTitle"
+    ).textContent =
+      "観劇を記録";
 
     return;
 
   }
 
 
-  records =
-    records.filter(
-      record =>
-        record.id !== id
-    );
+  /*
+   * 編集
+   */
+
+  document.getElementById(
+    "recordScreenTitle"
+  ).textContent =
+    "観劇記録を編集";
 
 
-  localStorage.setItem(
-    "theaterRecords",
-    JSON.stringify(records)
+  document.getElementById(
+    "editingRecordId"
+  ).value =
+    record.id;
+
+
+  document.getElementById(
+    "recordWork"
+  ).value =
+    record.workId;
+
+
+  populatePerformanceSelect(
+    record.workId
   );
 
 
-  showHomeScreen();
+  document.getElementById(
+    "recordPerformance"
+  ).value =
+    record.performanceId;
+
+
+  document.getElementById(
+    "recordDate"
+  ).value =
+    record.date || "";
+
+
+  document.getElementById(
+    "recordTheater"
+  ).value =
+    record.theaterId || "";
+
+
+  document.getElementById(
+    "recordSeat"
+  ).value =
+    record.seat || "";
+
+
+  document.getElementById(
+    "recordSeatRating"
+  ).value =
+    record.seatRating || "";
+
+
+  document.getElementById(
+    "recordSeatImpression"
+  ).value =
+    record.seatImpression || "";
+
+
+  document.getElementById(
+    "recordPrice"
+  ).value =
+    record.price || "";
+
+
+  document.getElementById(
+    "recordImpression"
+  ).value =
+    record.impression || "";
 
 }
 
 
-// =========================
-// 集計
-// =========================
+/* =====================================================
+   戻る
+===================================================== */
 
-function updateSummary() {
+document
+  .getElementById("backButton")
+  .addEventListener(
+    "click",
+    () => {
 
-  const workCount =
-    new Set(
-      records.map(
-        record =>
-          record.title
-      )
-    ).size;
+      addScreen.style.display =
+        "none";
 
 
-  const performanceCount =
-    records.length;
+      homeScreen.style.display =
+        "block";
+
+
+      renderHome();
+
+    }
+  );
+
+
+/* =====================================================
+   作品セレクト
+===================================================== */
+
+function populateWorkSelect() {
+
+  const select =
+    document.getElementById(
+      "recordWork"
+    );
+
+
+  select.innerHTML = `
+    <option value="">
+      作品を選択
+    </option>
+  `;
+
+
+  works.forEach(
+    work => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        work.id;
+
+
+      option.textContent =
+        work.name;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   公演セレクト
+===================================================== */
+
+function populatePerformanceSelect(
+  workId
+) {
+
+  const select =
+    document.getElementById(
+      "recordPerformance"
+    );
+
+
+  select.innerHTML = `
+    <option value="">
+      公演を選択
+    </option>
+  `;
+
+
+  if (!workId) {
+
+    return;
+
+  }
+
+
+  performances
+    .filter(
+      performance =>
+        performance.workId ===
+        workId
+    )
+    .forEach(
+      performance => {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+
+        option.value =
+          performance.id;
+
+
+        option.textContent =
+          performance.name;
+
+
+        select.appendChild(
+          option
+        );
+
+      }
+    );
+
+}
+
+
+/* =====================================================
+   劇場セレクト
+===================================================== */
+
+function populateTheaterSelect() {
+
+  const select =
+    document.getElementById(
+      "recordTheater"
+    );
+
+
+  select.innerHTML = `
+    <option value="">
+      劇場を選択
+    </option>
+  `;
+
+
+  theaters.forEach(
+    theater => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        theater.id;
+
+
+      option.textContent =
+        theater.name;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   作品変更
+===================================================== */
+
+document
+  .getElementById("recordWork")
+  .addEventListener(
+    "change",
+    event => {
+
+      populatePerformanceSelect(
+        event.target.value
+      );
+
+    }
+  );
+
+
+/* =====================================================
+   作品登録画面
+===================================================== */
+
+document
+  .getElementById(
+    "openWorkButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      openWorkScreen();
+
+    }
+  );
+
+
+function openWorkScreen() {
+
+  document
+    .getElementById("workForm")
+    .reset();
+
+
+  workScreen.style.display =
+    "block";
+
+}
+
+
+/* =====================================================
+   作品登録画面を閉じる
+===================================================== */
+
+document
+  .getElementById(
+    "closeWorkButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      workScreen.style.display =
+        "none";
+
+    }
+  );
+
+
+/* =====================================================
+   記録画面から作品登録
+===================================================== */
+
+document
+  .getElementById(
+    "recordNewWorkButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      openWorkScreen();
+
+    }
+  );
+
+
+/* =====================================================
+   作品登録
+===================================================== */
+
+document
+  .getElementById("workForm")
+  .addEventListener(
+    "submit",
+    event => {
+
+      event.preventDefault();
+
+
+      const name =
+        document
+          .getElementById(
+            "workName"
+          )
+          .value
+          .trim();
+
+
+      if (!name) {
+
+        return;
+
+      }
+
+
+      /*
+       * 画像設定
+       */
+
+      const newWork = {
+
+        id: createId(),
+
+        name: name,
+
+        image:
+          name === "テニスの王子様"
+            ? "images/tennis.png"
+            : ""
+
+      };
+
+
+      works.push(
+        newWork
+      );
+
+
+      saveData();
+
+
+      workScreen.style.display =
+        "none";
+
+
+      renderHome();
+
+
+      /*
+       * テニスの王子様
+       */
+
+      if (
+        name ===
+        "テニスの王子様"
+      ) {
+
+        showImageEffect(
+          "images/tennis.png"
+        );
+
+      }
+
+
+      /*
+       * 記録画面から登録した場合
+       */
+
+      if (
+        addScreen.style.display ===
+        "block"
+      ) {
+
+        populateWorkSelect();
+
+
+        document.getElementById(
+          "recordWork"
+        ).value =
+          newWork.id;
+
+
+        populatePerformanceSelect(
+          newWork.id
+        );
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   画像演出
+===================================================== */
+
+function showImageEffect(
+  imagePath
+) {
+
+  const effect =
+    document.getElementById(
+      "imageEffect"
+    );
+
+
+  const image =
+    document.getElementById(
+      "effectImage"
+    );
+
+
+  image.src =
+    imagePath;
+
+
+  effect.classList.remove(
+    "show"
+  );
+
+
+  void effect.offsetWidth;
+
+
+  effect.classList.add(
+    "show"
+  );
+
+
+  setTimeout(
+    () => {
+
+      effect.classList.remove(
+        "show"
+      );
+
+    },
+    1900
+  );
+
+}
+
+
+/* =====================================================
+   公演登録
+===================================================== */
+
+document
+  .getElementById(
+    "recordNewPerformanceButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      openPerformanceScreen();
+
+    }
+  );
+
+
+function openPerformanceScreen() {
+
+  const select =
+    document.getElementById(
+      "performanceWork"
+    );
+
+
+  select.innerHTML = `
+    <option value="">
+      作品を選択
+    </option>
+  `;
+
+
+  works.forEach(
+    work => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        work.id;
+
+
+      option.textContent =
+        work.name;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  const currentWork =
+    document.getElementById(
+      "recordWork"
+    ).value;
+
+
+  document
+    .getElementById(
+      "performanceForm"
+    )
+    .reset();
+
+
+  /*
+   * reset後に作品を入れ直す
+   */
+
+  select.innerHTML = `
+    <option value="">
+      作品を選択
+    </option>
+  `;
+
+
+  works.forEach(
+    work => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        work.id;
+
+
+      option.textContent =
+        work.name;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  if (currentWork) {
+
+    select.value =
+      currentWork;
+
+  }
+
+
+  performanceScreen.style.display =
+    "block";
+
+}
+
+
+/* =====================================================
+   公演登録画面を閉じる
+===================================================== */
+
+document
+  .getElementById(
+    "closePerformanceButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      performanceScreen.style.display =
+        "none";
+
+    }
+  );
+
+
+/* =====================================================
+   公演登録
+===================================================== */
+
+document
+  .getElementById(
+    "performanceForm"
+  )
+  .addEventListener(
+    "submit",
+    event => {
+
+      event.preventDefault();
+
+
+      const workId =
+        document.getElementById(
+          "performanceWork"
+        ).value;
+
+
+      const name =
+        document.getElementById(
+          "performanceName"
+        ).value
+        .trim();
+
+
+      if (!workId || !name) {
+
+        return;
+
+      }
+
+
+      const newPerformance = {
+
+        id: createId(),
+
+        workId: workId,
+
+        name: name
+
+      };
+
+
+      performances.push(
+        newPerformance
+      );
+
+
+      saveData();
+
+
+      performanceScreen.style.display =
+        "none";
+
+
+      /*
+       * 記録画面からの場合
+       */
+
+      if (
+        addScreen.style.display ===
+        "block"
+      ) {
+
+        populateWorkSelect();
+
+
+        document.getElementById(
+          "recordWork"
+        ).value =
+          workId;
+
+
+        populatePerformanceSelect(
+          workId
+        );
+
+
+        document.getElementById(
+          "recordPerformance"
+        ).value =
+          newPerformance.id;
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   劇場登録画面
+===================================================== */
+
+document
+  .getElementById(
+    "recordNewTheaterButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      openTheaterScreen();
+
+    }
+  );
+
+
+function openTheaterScreen() {
+
+  document
+    .getElementById(
+      "theaterForm"
+    )
+    .reset();
+
+
+  theaterScreen.style.display =
+    "block";
+
+}
+
+
+/* =====================================================
+   劇場登録画面を閉じる
+===================================================== */
+
+document
+  .getElementById(
+    "closeTheaterButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      theaterScreen.style.display =
+        "none";
+
+    }
+  );
+
+
+/* =====================================================
+   劇場登録
+===================================================== */
+
+document
+  .getElementById(
+    "theaterForm"
+  )
+  .addEventListener(
+    "submit",
+    event => {
+
+      event.preventDefault();
+
+
+      const name =
+        document
+          .getElementById(
+            "theaterName"
+          )
+          .value
+          .trim();
+
+
+      if (!name) {
+
+        return;
+
+      }
+
+
+      /*
+       * 同じ名前がある場合
+       */
+
+      const existing =
+        theaters.find(
+          theater =>
+            theater.name ===
+            name
+        );
+
+
+      if (existing) {
+
+        alert(
+          "この劇場はすでに登録されています。"
+        );
+
+        return;
+
+      }
+
+
+      const newTheater = {
+
+        id: createId(),
+
+        name: name
+
+      };
+
+
+      theaters.push(
+        newTheater
+      );
+
+
+      saveData();
+
+
+      theaterScreen.style.display =
+        "none";
+
+
+      /*
+       * 記録画面から登録した場合
+       */
+
+      if (
+        addScreen.style.display ===
+        "block"
+      ) {
+
+        populateTheaterSelect();
+
+
+        document.getElementById(
+          "recordTheater"
+        ).value =
+          newTheater.id;
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   観劇記録保存
+===================================================== */
+
+document
+  .getElementById("recordForm")
+  .addEventListener(
+    "submit",
+    event => {
+
+      event.preventDefault();
+
+
+      const editingId =
+        document.getElementById(
+          "editingRecordId"
+        ).value;
+
+
+      const recordData = {
+
+        workId:
+          document.getElementById(
+            "recordWork"
+          ).value,
+
+
+        performanceId:
+          document.getElementById(
+            "recordPerformance"
+          ).value,
+
+
+        date:
+          document.getElementById(
+            "recordDate"
+          ).value,
+
+
+        theaterId:
+          document.getElementById(
+            "recordTheater"
+          ).value,
+
+
+        seat:
+          document.getElementById(
+            "recordSeat"
+          ).value
+          .trim(),
+
+
+        seatRating:
+          document.getElementById(
+            "recordSeatRating"
+          ).value,
+
+
+        /*
+         * 改行をそのまま保存
+         */
+
+        seatImpression:
+          document.getElementById(
+            "recordSeatImpression"
+          ).value,
+
+
+        price:
+          document.getElementById(
+            "recordPrice"
+          ).value,
+
+
+        /*
+         * 改行をそのまま保存
+         */
+
+        impression:
+          document.getElementById(
+            "recordImpression"
+          ).value
+
+      };
+
+
+      /*
+       * 編集
+       */
+
+      if (editingId) {
+
+        const index =
+          records.findIndex(
+            record =>
+              record.id ===
+              editingId
+          );
+
+
+        if (index !== -1) {
+
+          records[index] = {
+
+            ...records[index],
+
+            ...recordData
+
+          };
+
+        }
+
+      }
+
+
+      /*
+       * 新規
+       */
+
+      else {
+
+        records.push({
+
+          id: createId(),
+
+          ...recordData
+
+        });
+
+      }
+
+
+      saveData();
+
+
+      addScreen.style.display =
+        "none";
+
+
+      homeScreen.style.display =
+        "block";
+
+
+      renderHome();
+
+    }
+  );
+
+
+/* =====================================================
+   作品詳細
+===================================================== */
+
+function openWorkDetail(
+  workId
+) {
+
+  homeScreen.style.display =
+    "none";
+
+
+  detailScreen.style.display =
+    "block";
+
+
+  const work =
+    works.find(
+      work =>
+        work.id === workId
+    );
+
+
+  if (!work) {
+
+    return;
+
+  }
+
+
+  const workRecords =
+    records.filter(
+      record =>
+        record.workId ===
+        workId
+    );
 
 
   const totalPrice =
-    records.reduce(
-      (sum, record) =>
-        sum +
-        (Number(record.price) || 0),
+    workRecords.reduce(
+      (sum, record) => {
+
+        return (
+          sum +
+          Number(record.price || 0)
+        );
+
+      },
       0
     );
 
 
-  document.getElementById(
-    "workCount"
-  ).textContent =
-    workCount;
+  const workPerformances =
+    performances.filter(
+      performance =>
+        performance.workId ===
+        workId
+    );
 
 
-  document.getElementById(
-    "performanceCount"
-  ).textContent =
-    performanceCount;
+  let html = `
+    <div class="detail-header">
+
+      ${
+        work.image
+          ? `
+            <img
+              class="detail-work-image"
+              src="${work.image}"
+              alt=""
+            >
+          `
+          : ""
+      }
+
+      <h2>${escapeHTML(work.name)}</h2>
+
+      <div class="detail-summary">
+        観劇回数：${workRecords.length}回<br>
+        累計金額：¥${totalPrice.toLocaleString()}
+      </div>
+
+    </div>
+  `;
 
 
-  document.getElementById(
-    "totalPrice"
-  ).textContent =
-    `${totalPrice.toLocaleString()}円`;
+  /*
+   * 公演ごと
+   */
 
-}
+  workPerformances.forEach(
+    performance => {
 
-
-// =========================
-// 星
-// =========================
-
-function getStars(rating) {
-
-  const value =
-    Number(rating) || 0;
+      const performanceRecords =
+        workRecords.filter(
+          record =>
+            record.performanceId ===
+            performance.id
+        );
 
 
-  return (
-    "★".repeat(value) +
-    "☆".repeat(5 - value)
+      const performancePrice =
+        performanceRecords.reduce(
+          (sum, record) => {
+
+            return (
+              sum +
+              Number(record.price || 0)
+            );
+
+          },
+          0
+        );
+
+
+      html += `
+        <div class="performance-block">
+
+          <div class="performance-title">
+            ${escapeHTML(
+              performance.name
+            )}
+          </div>
+
+          <div class="performance-summary">
+            ${performanceRecords.length}回
+            ／
+            ¥${performancePrice.toLocaleString()}
+          </div>
+      `;
+
+
+      if (
+        performanceRecords.length ===
+        0
+      ) {
+
+        html += `
+          <div class="empty">
+            まだ観劇記録がありません
+          </div>
+        `;
+
+      }
+
+
+      performanceRecords
+        .sort(
+          (a, b) =>
+            new Date(b.date) -
+            new Date(a.date)
+        )
+        .forEach(
+          record => {
+
+            html +=
+              createRecordHTML(
+                record
+              );
+
+          }
+        );
+
+
+      html += `
+        </div>
+      `;
+
+    }
   );
 
+
+  /*
+   * 公演登録されていない記録
+   */
+
+  const unknownRecords =
+    workRecords.filter(
+      record => {
+
+        return !workPerformances.some(
+          performance =>
+            performance.id ===
+            record.performanceId
+        );
+
+      }
+    );
+
+
+  if (
+    unknownRecords.length > 0
+  ) {
+
+    html += `
+      <div class="performance-block">
+
+        <div class="performance-title">
+          その他
+        </div>
+    `;
+
+
+    unknownRecords.forEach(
+      record => {
+
+        html +=
+          createRecordHTML(
+            record
+          );
+
+      }
+    );
+
+
+    html += `
+      </div>
+    `;
+
+  }
+
+
+  document.getElementById(
+    "detailContent"
+  ).innerHTML =
+    html;
+
+
+  /*
+   * 編集
+   */
+
+  document
+    .querySelectorAll(
+      ".edit-button"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const id =
+              button.dataset.id;
+
+
+            const record =
+              records.find(
+                record =>
+                  record.id ===
+                  id
+              );
+
+
+            if (record) {
+
+              openRecordScreen(
+                record
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+  /*
+   * 削除
+   */
+
+  document
+    .querySelectorAll(
+      ".delete-button"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const id =
+              button.dataset.id;
+
+
+            const shouldDelete =
+              confirm(
+                "この観劇記録を削除しますか？"
+              );
+
+
+            if (!shouldDelete) {
+
+              return;
+
+            }
+
+
+            records =
+              records.filter(
+                record =>
+                  record.id !==
+                  id
+              );
+
+
+            saveData();
+
+
+            openWorkDetail(
+              workId
+            );
+
+          }
+        );
+
+      }
+    );
+
 }
 
 
-// =========================
-// 日付
-// =========================
+/* =====================================================
+   観劇記録HTML
+===================================================== */
 
-function formatDate(date) {
+function createRecordHTML(
+  record
+) {
 
-  if (!date) {
+  let seatStars = "";
+
+
+  if (
+    record.seatRating
+  ) {
+
+    const rating =
+      Number(
+        record.seatRating
+      );
+
+
+    seatStars =
+      "★".repeat(rating) +
+      "☆".repeat(5 - rating);
+
+  }
+
+
+  /*
+   * 劇場名を取得
+   */
+
+  const theater =
+    theaters.find(
+      theater =>
+        theater.id ===
+        record.theaterId
+    );
+
+
+  let html = `
+    <div class="record-card">
+
+      <div class="record-date">${escapeHTML(record.date || "")}</div>
+  `;
+
+
+  /*
+   * 劇場
+   */
+
+  if (theater) {
+
+    html += `
+      <div class="record-theater">
+        ${escapeHTML(theater.name)}
+      </div>
+    `;
+
+  }
+
+
+  /*
+   * 座席
+   */
+
+  if (record.seat) {
+
+    html += `
+      <div class="record-seat">
+        席：${escapeHTML(record.seat)}
+      </div>
+    `;
+
+  }
+
+
+  /*
+   * 座席評価
+   */
+
+  if (seatStars) {
+
+    html += `
+      <div class="seat-rating">
+        ${seatStars}
+      </div>
+    `;
+
+  }
+
+
+  /*
+   * 座席の感想
+   */
+
+  if (record.seatImpression) {
+
+    html += `
+      <div class="impression-box">
+
+        <div class="impression-title">
+          座席について
+        </div>
+
+        <div class="impression-text">${escapeHTML(record.seatImpression)}</div>
+
+      </div>
+    `;
+
+  }
+
+
+  /*
+   * チケット代
+   */
+
+  if (record.price) {
+
+    html += `
+      <div class="record-price">
+        チケット代：
+        ¥${Number(
+          record.price
+        ).toLocaleString()}
+      </div>
+    `;
+
+  }
+
+
+  /*
+   * 作品の感想
+   */
+
+  if (record.impression) {
+
+    html += `
+      <div class="impression-box">
+
+        <div class="impression-title">
+          作品について
+        </div>
+
+        <div class="impression-text">${escapeHTML(record.impression)}</div>
+
+      </div>
+    `;
+
+  }
+
+
+  /*
+   * 編集・削除
+   */
+
+  html += `
+      <div class="record-actions">
+
+        <button
+          class="edit-button"
+          data-id="${record.id}"
+        >
+          編集
+        </button>
+
+        <button
+          class="delete-button"
+          data-id="${record.id}"
+        >
+          削除
+        </button>
+
+      </div>
+
+    </div>
+  `;
+
+
+  return html;
+
+}
+
+
+/* =====================================================
+   詳細画面から戻る
+===================================================== */
+
+document
+  .getElementById(
+    "detailBackButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      detailScreen.style.display =
+        "none";
+
+
+      homeScreen.style.display =
+        "block";
+
+
+      renderHome();
+
+    }
+  );
+
+
+/* =====================================================
+   HTMLエスケープ
+===================================================== */
+
+function escapeHTML(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
 
     return "";
 
   }
 
 
-  const parts =
-    date.split("-");
-
-
-  return `
-    ${parts[0]}年
-    ${parts[1]}月
-    ${parts[2]}日
-  `;
-
-}
-
-
-// =========================
-// 金額
-// =========================
-
-function formatPrice(price) {
-
-  return `${
-    Number(price || 0)
-      .toLocaleString()
-  }円`;
-
-}
-
-
-// =========================
-// HTMLエスケープ
-// =========================
-
-function escapeHTML(value) {
-
   return String(value)
-    .replace(/&/g, "&amp;")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
     .replace(
       /</g,
       "&lt;"
@@ -1344,48 +2082,3 @@ function escapeHTML(value) {
     );
 
 }
-
-
-// =========================
-// 戻るボタン
-// =========================
-
-backButton.addEventListener(
-  "click",
-  showHomeScreen
-);
-
-
-detailBackButton.addEventListener(
-  "click",
-  showHomeScreen
-);
-
-
-workDetailBackButton.addEventListener(
-  "click",
-  showHomeScreen
-);
-
-
-theaterDetailBackButton.addEventListener(
-  "click",
-  showHomeScreen
-);
-
-
-// =========================
-// 追加ボタン
-// =========================
-
-addButton.addEventListener(
-  "click",
-  showNewRecordScreen
-);
-
-
-// =========================
-// 初期表示
-// =========================
-
-showHomeScreen();
