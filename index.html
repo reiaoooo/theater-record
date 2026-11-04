@@ -25,16 +25,16 @@
     font-size: 14px;
   }
 
-  /* 受付番号の列を揃えるための設定 */
   textarea {
     height: 100px;
-    white-space: pre;        /* 改行をそのまま保持 */
-    font-family: monospace;  /* 等幅フォントで縦が揃う */
+    white-space: pre;
+    font-family: monospace;
   }
 
   button {
     padding: 10px 20px;
     font-size: 16px;
+    margin-right: 10px;
   }
 
   .result-table {
@@ -72,9 +72,9 @@
 
 <h2>当落一括確認ツール</h2>
 
-<!-- 10枠をJSで生成 -->
 <div id="accounts"></div>
 
+<button id="add">＋ アカウント追加</button>
 <button id="run">一括確認する</button>
 
 <h2 style="margin-top:40px;">結果</h2>
