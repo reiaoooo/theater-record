@@ -2,21 +2,25 @@ let accountCount = 0;
 const maxAccounts = 20;
 const accountsDiv = document.getElementById("accounts");
 
-// 枠追加
+// 枠追加（innerHTMLを使わない → 入力が消えない）
 function addAccount() {
   if (accountCount >= maxAccounts) return;
 
   accountCount++;
 
-  accountsDiv.innerHTML += `
-    <div class="account-block" id="acc${accountCount}">
+  const block = document.createElement("div");
+  block.className = "account-block";
+  block.id = `acc${accountCount}`;
+
+  block.innerHTML = `
       <label>電話番号</label>
       <input id="tel${accountCount}" placeholder="例：07012345678">
 
       <label>受付番号（複数行OK）</label>
       <textarea id="entries${accountCount}" placeholder="例：1234&#10;5678&#10;9012"></textarea>
-    </div>
   `;
+
+  accountsDiv.appendChild(block);
 }
 
 // 初期1枠
