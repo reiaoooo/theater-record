@@ -17,19 +17,19 @@
     border-radius: 8px;
   }
 
-  .account-block h3 {
-    margin-top: 0;
-  }
-
   input, textarea {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
     margin-bottom: 10px;
+    font-size: 14px;
   }
 
+  /* 受付番号の列を揃えるための設定 */
   textarea {
     height: 100px;
+    white-space: pre;        /* 改行をそのまま保持 */
+    font-family: monospace;  /* 等幅フォントで縦が揃う */
   }
 
   button {
@@ -52,31 +52,9 @@
     text-align: center;
   }
 
-  .result-table th {
-    background: #f0f0f0;
-    font-weight: bold;
-  }
-
-  .win {
-    background: #d8f5d0;
-  }
-
-  .lose {
-    background: #f5d0d0;
-  }
-
-  .unknown {
-    background: #eee;
-  }
-
-  @media (max-width: 600px) {
-    .result-table {
-      font-size: 12px;
-    }
-    .result-table th, .result-table td {
-      padding: 4px;
-    }
-  }
+  .win { background: #d8f5d0; }
+  .lose { background: #f5d0d0; }
+  .unknown { background: #eee; }
 
   .total-sum {
     margin-top: 10px;
@@ -92,16 +70,14 @@
 
 <body>
 
-<h2>当落一括確認ツール（10アカウント対応）</h2>
+<h2>当落一括確認ツール</h2>
 
-<!-- 10枠 -->
-<div id="accounts">
-  <!-- JSで自動生成する -->
-</div>
+<!-- 10枠をJSで生成 -->
+<div id="accounts"></div>
 
 <button id="run">一括確認する</button>
 
-<h2>結果</h2>
+<h2 style="margin-top:40px;">結果</h2>
 <div id="result"></div>
 
 <script src="script.js"></script>
