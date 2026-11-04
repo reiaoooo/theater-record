@@ -1,668 +1,110 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
+<title>当落一括確認ツール</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<style>
+  body {
+    font-family: sans-serif;
+    padding: 20px;
+  }
 
-  <title>観劇記録</title>
+  .account-block {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
+  .account-block h3 {
+    margin-top: 0;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  textarea {
+    height: 100px;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+
+  .result-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    table-layout: fixed;
+    margin-top: 10px;
+  }
+
+  .result-table th, .result-table td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    word-wrap: break-word;
+    text-align: center;
+  }
+
+  .result-table th {
+    background: #f0f0f0;
+    font-weight: bold;
+  }
+
+  .win {
+    background: #d8f5d0;
+  }
+
+  .lose {
+    background: #f5d0d0;
+  }
+
+  .unknown {
+    background: #eee;
+  }
+
+  @media (max-width: 600px) {
+    .result-table {
+      font-size: 12px;
+    }
+    .result-table th, .result-table td {
+      padding: 4px;
+    }
+  }
+
+  .total-sum {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .account-result {
+    margin-bottom: 40px;
+  }
+</style>
 </head>
-
 
 <body>
 
-
-<!-- =========================
-     ヘッダー
-========================= -->
-
-<header>
-  <h1>観劇記録</h1>
-</header>
-
-
-<!-- =========================
-     ホーム画面
-========================= -->
-
-<main id="homeScreen">
-
-
-  <!-- サマリー -->
-
-  <section class="summary">
-
-    <div class="summary-box">
-      <span>作品</span>
-      <strong id="workCount">0</strong>
-    </div>
-
-    <div class="summary-box">
-      <span>観劇回数</span>
-      <strong id="recordCount">0</strong>
-    </div>
-
-    <div class="summary-box">
-      <span>合計金額</span>
-      <strong id="totalPrice">¥0</strong>
-    </div>
-
-  </section>
-
-
-  <!-- =====================
-       作品一覧
-  ====================== -->
-
-  <section>
-
-    <div class="section-title">
-
-      <h2>作品</h2>
-
-      <button
-        class="small-button"
-        id="openWorkButton"
-      >
-        ＋ 作品登録
-      </button>
-
-    </div>
-
-
-    <div
-      id="workList"
-      class="work-list"
-    ></div>
-
-  </section>
-
-
-  <!-- =====================
-       劇場一覧
-  ====================== -->
-
-  <section class="theater-section">
-
-    <div class="section-title">
-
-      <h2>劇場</h2>
-
-      <button
-        class="small-button"
-        id="openTheaterButton"
-      >
-        ＋ 劇場登録
-      </button>
-
-    </div>
-
-
-    <div
-      id="theaterList"
-      class="theater-list"
-    ></div>
-
-  </section>
-
-
-  <!-- =====================
-       最近の観劇
-  ====================== -->
-
-  <section class="recent-section">
-
-    <h2>最近の観劇</h2>
-
-    <div
-      id="recentList"
-      class="recent-list"
-    ></div>
-
-  </section>
-
-
-  <!-- =====================
-       観劇を記録
-  ====================== -->
-
-  <button
-    class="add-button"
-    id="addButton"
-  >
-    ＋ 観劇を記録
-  </button>
-
-
-</main>
-
-
-<!-- ==================================================
-     観劇記録画面
-================================================== -->
-
-<section
-  class="add-screen"
-  id="addScreen"
->
-
-  <button
-    class="back-button"
-    id="backButton"
-  >
-    ‹ 戻る
-  </button>
-
-
-  <h2 id="recordScreenTitle">
-    観劇を記録
-  </h2>
-
-
-  <form id="recordForm">
-
-
-    <input
-      type="hidden"
-      id="editingRecordId"
-    >
-
-
-    <!-- 作品 -->
-
-    <label>
-
-      作品
-
-      <div class="select-with-button">
-
-        <select
-          id="recordWork"
-          required
-        >
-
-          <option value="">
-            作品を選択
-          </option>
-
-        </select>
-
-
-        <button
-          type="button"
-          id="recordNewWorkButton"
-        >
-          新規
-        </button>
-
-      </div>
-
-    </label>
-
-
-    <!-- 公演 -->
-
-    <label>
-
-      公演
-
-      <div class="select-with-button">
-
-        <select
-          id="recordPerformance"
-          required
-        >
-
-          <option value="">
-            公演を選択
-          </option>
-
-        </select>
-
-
-        <button
-          type="button"
-          id="recordNewPerformanceButton"
-        >
-          新規
-        </button>
-
-      </div>
-
-    </label>
-
-
-    <!-- 観劇日 -->
-
-    <label>
-
-      観劇日
-
-      <input
-        type="date"
-        id="recordDate"
-        required
-      >
-
-    </label>
-
-
-    <!-- 劇場 -->
-
-    <label>
-
-      劇場
-
-      <div class="select-with-button">
-
-        <select
-          id="recordTheater"
-          required
-        >
-
-          <option value="">
-            劇場を選択
-          </option>
-
-        </select>
-
-
-        <button
-          type="button"
-          id="recordNewTheaterButton"
-        >
-          新規
-        </button>
-
-      </div>
-
-    </label>
-
-
-    <!-- 座席 -->
-
-    <label>
-
-      座席
-
-      <input
-        type="text"
-        id="recordSeat"
-        placeholder="例：1階 10列 15番"
-      >
-
-    </label>
-
-
-    <!-- 座席の見やすさ -->
-
-    <label>
-
-      座席の見やすさ
-
-      <select id="recordSeatRating">
-
-        <option value="">
-          選択してください
-        </option>
-
-        <option value="5">
-          ★★★★★ とても見やすい
-        </option>
-
-        <option value="4">
-          ★★★★☆ 見やすい
-        </option>
-
-        <option value="3">
-          ★★★☆☆ 普通
-        </option>
-
-        <option value="2">
-          ★★☆☆☆ 少し見づらい
-        </option>
-
-        <option value="1">
-          ★☆☆☆☆ 見づらい
-        </option>
-
-      </select>
-
-    </label>
-
-
-    <!-- 座席の感想 -->
-
-    <label>
-
-      座席について
-
-      <textarea
-        id="recordSeatImpression"
-        placeholder="舞台の見え方や距離感など"
-      ></textarea>
-
-    </label>
-
-
-    <!-- チケット代 -->
-
-    <label>
-
-      チケット代
-
-      <div class="price-input">
-
-        <span>¥</span>
-
-        <input
-          type="number"
-          id="recordPrice"
-          placeholder="例：11000"
-          min="0"
-        >
-
-      </div>
-
-    </label>
-
-
-    <!-- 作品の感想 -->
-
-    <label>
-
-      作品について
-
-      <textarea
-        id="recordImpression"
-        placeholder="作品の感想を入力"
-      ></textarea>
-
-    </label>
-
-
-    <button
-      type="submit"
-      class="save-button"
-    >
-      保存する
-    </button>
-
-
-  </form>
-
-</section>
-
-
-<!-- ==================================================
-     作品登録
-================================================== -->
-
-<section
-  class="modal-screen"
-  id="workScreen"
->
-
-  <div class="modal-card">
-
-    <button
-      class="modal-close"
-      id="closeWorkButton"
-    >
-      ×
-    </button>
-
-
-    <h2>作品を登録</h2>
-
-
-    <form id="workForm">
-
-      <label>
-
-        作品名
-
-        <input
-          type="text"
-          id="workName"
-          placeholder="例：テニスの王子様"
-          required
-        >
-
-      </label>
-
-
-      <button
-        type="submit"
-        class="save-button"
-      >
-        作品を登録
-      </button>
-
-    </form>
-
-  </div>
-
-</section>
-
-
-<!-- ==================================================
-     公演登録
-================================================== -->
-
-<section
-  class="modal-screen"
-  id="performanceScreen"
->
-
-  <div class="modal-card">
-
-    <button
-      class="modal-close"
-      id="closePerformanceButton"
-    >
-      ×
-    </button>
-
-
-    <h2>公演を登録</h2>
-
-
-    <form id="performanceForm">
-
-      <label>
-
-        作品
-
-        <select
-          id="performanceWork"
-          required
-        >
-
-          <option value="">
-            作品を選択
-          </option>
-
-        </select>
-
-      </label>
-
-
-      <label>
-
-        公演名
-
-        <input
-          type="text"
-          id="performanceName"
-          placeholder="例：立海公演"
-          required
-        >
-
-      </label>
-
-
-      <button
-        type="submit"
-        class="save-button"
-      >
-        公演を登録
-      </button>
-
-    </form>
-
-  </div>
-
-</section>
-
-
-<!-- ==================================================
-     劇場登録
-================================================== -->
-
-<section
-  class="modal-screen"
-  id="theaterScreen"
->
-
-  <div class="modal-card">
-
-    <button
-      class="modal-close"
-      id="closeTheaterButton"
-    >
-      ×
-    </button>
-
-
-    <h2>劇場を登録</h2>
-
-
-    <form id="theaterForm">
-
-      <label>
-
-        劇場名
-
-        <input
-          type="text"
-          id="theaterName"
-          placeholder="例：日本青年館ホール"
-          required
-        >
-
-      </label>
-
-
-      <button
-        type="submit"
-        class="save-button"
-      >
-        劇場を登録
-      </button>
-
-    </form>
-
-  </div>
-
-</section>
-
-
-<!-- ==================================================
-     作品詳細画面
-================================================== -->
-
-<section
-  class="detail-screen"
-  id="detailScreen"
->
-
-  <button
-    class="back-button"
-    id="detailBackButton"
-  >
-    ‹ 戻る
-  </button>
-
-
-  <div id="detailContent"></div>
-
-</section>
-
-
-<!-- ==================================================
-     劇場詳細画面
-================================================== -->
-
-<section
-  class="detail-screen"
-  id="theaterDetailScreen"
->
-
-  <button
-    class="back-button"
-    id="theaterDetailBackButton"
-  >
-    ‹ 戻る
-  </button>
-
-
-  <div id="theaterDetailContent"></div>
-
-</section>
-
-
-<!-- ==================================================
-     観劇記録詳細画面
-================================================== -->
-
-<section
-  class="detail-screen"
-  id="recordDetailScreen"
->
-
-  <button
-    class="back-button"
-    id="recordDetailBackButton"
-  >
-    ‹ 戻る
-  </button>
-
-
-  <div id="recordDetailContent"></div>
-
-</section>
-
-
-<!-- ==================================================
-     画像演出
-================================================== -->
-
-<div
-  class="image-effect"
-  id="imageEffect"
->
-
-  <img
-    id="effectImage"
-    src=""
-    alt=""
-  >
-
+<h2>当落一括確認ツール（10アカウント対応）</h2>
+
+<!-- 10枠 -->
+<div id="accounts">
+  <!-- JSで自動生成する -->
 </div>
 
+<button id="run">一括確認する</button>
+
+<h2>結果</h2>
+<div id="result"></div>
 
 <script src="script.js"></script>
 
 </body>
-
 </html>
