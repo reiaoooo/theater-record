@@ -14,7 +14,7 @@ function addAccount() {
       <input id="tel${accountCount}" placeholder="例：07012345678">
 
       <label>受付番号（複数行OK）</label>
-      <textarea id="entries${accountCount}" placeholder="例：1234\n5678\n9012"></textarea>
+      <textarea id="entries${accountCount}" placeholder="例：1234&#10;5678&#10;9012"></textarea>
     </div>
   `;
 }
